@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>در مسیر پزشکی</title>
+<meta name="theme-color" content="#0E3B2C">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="در مسیر پزشکی">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F6F1; --surface:#FFFFFF; --surface2:#F7FAF6; --ink:#14261F; --muted:#5C7167; --line:#DFE8E1;
+  --brand:#16A06A; --brand-ink:#0B6A44; --brand-soft:#DCF3E6;
+  --next:#F2A100; --next-soft:#FFF4D9; --next-ink:#7A5200;
+  --danger:#D6453A; --hero:#0E3B2C; --hero-ink:#EAF8F0; --shadow:0 1px 2px rgba(20,38,31,.06),0 6px 20px rgba(20,38,31,.05);
+  --c-math:#5B6CF0; --c-phys:#0EA5D9; --c-chem:#A855F7; --c-bio:#22A559; --c-geo:#F0782A;
+  --chart1:#16A06A; --chart2:#5B6CF0;
+}
+html[data-theme="dark"]{
+  --bg:#0B1310; --surface:#121E19; --surface2:#16241E; --ink:#E6F1EA; --muted:#93A99D; --line:#233329;
+  --brand:#38D39B; --brand-ink:#7CE8BE; --brand-soft:#15382B;
+  --next:#FFB52E; --next-soft:#35280A; --next-ink:#FFD27A;
+  --danger:#FF7A6E; --hero:#0A2A20; --hero-ink:#E6F6EE; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.25);
+  --chart1:#38D39B; --chart2:#8E9BFF;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",Tahoma,"Segoe UI",sans-serif;font-size:15px;line-height:1.7;padding-bottom:84px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:8px}
+
+/* ---------- Hero ---------- */
+.hero{background:var(--hero);color:var(--hero-ink);padding:18px 16px 26px;padding-top:max(18px,env(safe-area-inset-top))}
+.hero-in{max-width:980px;margin:0 auto}
+.hero-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.brand{font-weight:800;font-size:16px;opacity:.95;display:flex;align-items:center;gap:8px}
+.brand i{width:10px;height:10px;border-radius:50%;background:var(--brand);display:inline-block}
+.hero-actions{display:flex;gap:8px}
+.icon-btn{width:40px;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:var(--hero-ink);display:grid;place-items:center;transition:background .15s}
+.icon-btn:hover{background:rgba(255,255,255,.18)}
+.icon-btn svg{width:20px;height:20px}
+.quote{display:flex;gap:12px;align-items:flex-start}
+.quote p{margin:0;font-size:clamp(19px,3.6vw,28px);font-weight:700;line-height:1.75;flex:1;min-height:2.6em}
+.quote .icon-btn{flex:none;width:34px;height:34px;border-radius:10px;margin-top:6px}
+.quote .icon-btn svg{width:16px;height:16px}
+.hero-sub{margin-top:10px;font-size:13px;opacity:.75}
+
+/* ---------- Tabs ---------- */
+.tabs{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.tabs-in{max-width:980px;margin:0 auto;display:flex;gap:6px;padding:8px 12px;overflow-x:auto}
+.tab{flex:1 0 auto;display:flex;align-items:center;justify-content:center;gap:8px;padding:9px 14px;border:0;background:transparent;border-radius:12px;color:var(--muted);font-weight:500;white-space:nowrap;transition:all .15s}
+.tab svg{width:19px;height:19px;flex:none}
+.tab:hover{background:var(--surface2)}
+.tab.active{background:var(--brand);color:#fff;font-weight:700}
+html[data-theme="dark"] .tab.active{color:#05261A}
+@media (max-width:720px){
+  .tabs{position:fixed;top:auto;bottom:0;left:0;right:0;border-bottom:0;border-top:1px solid var(--line);background:var(--surface);backdrop-filter:none;padding-bottom:env(safe-area-inset-bottom)}
+  .tabs-in{padding:6px 6px;gap:2px}
+  .tab{flex-direction:column;gap:2px;font-size:11px;padding:6px 4px;border-radius:10px;flex:1}
+  .tab svg{width:22px;height:22px}
+}
+
+/* ---------- Layout ---------- */
+main{max-width:980px;margin:0 auto;padding:18px 12px}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:6px 4px 14px}
+.page-head h2{margin:0;font-size:20px}
+.page-head p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.legend{display:flex;gap:12px;font-size:12px;color:var(--muted);align-items:center;flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:4px;display:inline-block}
+
+/* ---------- Exam cards ---------- */
+.exam{background:var(--surface);border:1px solid var(--line);border-radius:18px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;transition:border-color .2s}
+.exam.past{opacity:.78}
+.exam.next{border:2px solid var(--next);background:linear-gradient(0deg,var(--surface),var(--surface)) padding-box}
+.exam.today{border:2px solid var(--brand)}
+.exam-head{width:100%;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:12px 14px;background:transparent;border:0;text-align:right}
+.exam.next .exam-head{background:var(--next-soft)}
+.exam.today .exam-head{background:var(--brand-soft)}
+.date-box{width:58px;height:58px;border-radius:14px;background:var(--surface2);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.2}
+.date-box b{font-size:22px;font-weight:800}
+.date-box small{font-size:11px;color:var(--muted)}
+.exam.next .date-box{background:var(--next);border-color:var(--next);color:#2B1C00}
+.exam.next .date-box small{color:#4A3300}
+.exam.today .date-box{background:var(--brand);border-color:var(--brand);color:#fff}
+.exam.today .date-box small{color:#E6FFF4}
+.head-info{min-width:0}
+.head-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700}
+.badge{font-size:11px;font-weight:700;padding:1px 9px;border-radius:99px;background:var(--surface2);color:var(--muted);border:1px solid var(--line)}
+.badge.next{background:var(--next);color:#2B1C00;border-color:var(--next)}
+.badge.today{background:var(--brand);color:#fff;border-color:var(--brand)}
+.head-meta{font-size:12.5px;color:var(--muted);margin-top:2px}
+.bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:7px;max-width:320px}
+.bar>div{height:100%;background:var(--brand);border-radius:99px;transition:width .25s}
+.chev{width:22px;height:22px;color:var(--muted);transition:transform .2s}
+.exam.open .chev{transform:rotate(180deg)}
+.exam-body{display:none;padding:4px 14px 14px;border-top:1px dashed var(--line)}
+.exam.open .exam-body{display:block;animation:reveal .22s ease}
+@keyframes reveal{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.exam.open .exam-body{animation:none}.bar>div,.chev{transition:none}}
+
+/* ---------- Items ---------- */
+.item{padding:12px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.item.resolved{opacity:.55}
+.item-top{display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap}
+.subj{--c:var(--brand);font-weight:700;font-size:12.5px;padding:2px 11px;border-radius:9px;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);white-space:nowrap}
+.s-math{--c:var(--c-math)}.s-phys{--c:var(--c-phys)}.s-chem{--c:var(--c-chem)}.s-bio{--c:var(--c-bio)}.s-geo{--c:var(--c-geo)}
+.grade{font-size:12px;color:var(--muted);padding:2px 0}
+.topic{font-size:14px;flex:1 1 220px}
+.checks{display:flex;gap:8px;flex-wrap:wrap;margin:9px 0 8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0;width:100%;height:100%}
+.chip span{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:99px;border:1.5px solid var(--line);background:var(--surface2);font-size:13px;font-weight:500;color:var(--muted);transition:all .15s;user-select:none}
+.chip span::before{content:"";width:16px;height:16px;border-radius:50%;border:2px solid var(--muted);flex:none;transition:all .15s}
+.chip input:checked+span{background:var(--brand-soft);border-color:var(--brand);color:var(--brand-ink);font-weight:700}
+.chip input:checked+span::before{border-color:var(--brand);background:var(--brand) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.7 2.7L12 5.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
+.chip input:focus-visible+span{outline:2px solid var(--brand);outline-offset:2px}
+textarea.note{width:100%;resize:none;min-height:40px;padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface2);font-size:13.5px;overflow:hidden}
+textarea.note::placeholder{color:var(--muted)}
+textarea.note:focus{border-color:var(--brand);outline:0;background:var(--surface)}
+
+/* ---------- Report ---------- */
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:12px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:6px}
+.field.off label::after{content:"(در این آزمون نبوده)";font-weight:400;color:var(--muted);font-size:11px}
+.field.off input{opacity:.65}
+input.num,select.sel{width:100%;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface2);font-size:15px;text-align:center}
+select.sel{text-align:right;cursor:pointer}
+input.num:focus,select.sel:focus{border-color:var(--brand);outline:0;background:var(--surface)}
+.sep{grid-column:1/-1;height:1px;background:var(--line);margin:2px 0}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--c,var(--brand));display:inline-block}
+.chart-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:18px;box-shadow:var(--shadow)}
+.chart-card h3{margin:0 0 2px;font-size:16px}
+.chart-card p{margin:0 0 10px;color:var(--muted);font-size:12.5px}
+.chart-scroll{overflow-x:auto}
+.chart-scroll svg{display:block;min-width:560px;width:100%;height:auto}
+.empty{padding:26px 10px;text-align:center;color:var(--muted);font-size:13.5px}
+.chart text{fill:var(--muted);font-family:inherit}
+.chart .grid{stroke:var(--line)}
+.chart .val{fill:var(--ink);font-weight:700}
+
+/* ---------- Filters ---------- */
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
+.summary{margin:0 4px 12px;font-size:13.5px;color:var(--muted)}
+.summary b{color:var(--ink)}
+.group-title{display:flex;align-items:center;gap:10px;margin:18px 4px 8px;font-weight:800}
+.group-title small{font-weight:400;color:var(--muted)}
+.missing{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted);margin:2px 0 8px}
+.missing span{background:color-mix(in srgb,var(--danger) 13%,transparent);color:var(--danger);font-weight:700;padding:1px 10px;border-radius:99px}
+.missing em{color:var(--brand-ink);font-style:normal;font-weight:700}
+.list-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:2px 14px;box-shadow:var(--shadow)}
+
+/* ---------- General ---------- */
+.gen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.gen{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+.gen-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.gen-head h3{margin:0;font-size:16px}
+.gen-head span{font-size:12.5px;color:var(--muted)}
+.chap{display:grid;grid-template-columns:62px 1fr 1fr;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.chap:last-child{border-bottom:0}
+.chap b{font-size:13px}
+.chap .chip span{width:100%;justify-content:center;padding:6px 6px;font-size:12.5px}
+.chap .chip span::before{width:14px;height:14px}
+.gen-cols{display:grid;grid-template-columns:62px 1fr 1fr;gap:6px;font-size:11.5px;color:var(--muted);text-align:center;margin-top:10px}
+
+/* ---------- Misc ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface2);font-weight:500;transition:all .15s}
+.btn:hover{border-color:var(--brand)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:700}
+html[data-theme="dark"] .btn.primary{color:#05261A}
+.btn.danger{color:var(--danger)}
+.btn svg{width:18px;height:18px}
+dialog{border:0;border-radius:22px;padding:0;max-width:440px;width:calc(100% - 28px);background:var(--surface);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(5,15,11,.55)}
+.dlg{padding:20px;display:grid;gap:10px}
+.dlg h3{margin:0 0 2px;font-size:18px}
+.dlg p{margin:0;color:var(--muted);font-size:13.5px}
+.dlg .row{display:grid;gap:8px}
+.status{font-size:12.5px;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;font-size:13.5px;opacity:0;pointer-events:none;transition:all .25s;z-index:60;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+@media (min-width:721px){.toast{bottom:28px}body{padding-bottom:30px}}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="hero-bar">
+      <div class="brand"><i></i> در مسیر پزشکی</div>
+      <div class="hero-actions">
+        <button class="icon-btn" id="btnData" title="پشتیبان‌گیری و بازیابی" aria-label="پشتیبان‌گیری و بازیابی"></button>
+        <button class="icon-btn" id="btnTheme" title="حالت تیره / روشن" aria-label="حالت تیره یا روشن"></button>
+      </div>
+    </div>
+    <div class="quote">
+      <p id="quoteText"></p>
+      <button class="icon-btn" id="btnQuote" title="جمله بعدی" aria-label="جمله بعدی"></button>
+    </div>
+    <div class="hero-sub" id="todayLine"></div>
+  </div>
+</header>
+
+<nav class="tabs"><div class="tabs-in" id="tabs"></div></nav>
+
+<main id="view"></main>
+
+<dialog id="dlgData">
+  <div class="dlg">
+    <h3>پشتیبان‌گیری و بازیابی</h3>
+    <p>اطلاعات شما روی همین مرورگر ذخیره می‌شود. برای اطمینان، هر چند وقت یک‌بار یک نسخه‌ی پشتیبان (فایل JSON) بگیرید.</p>
+    <div class="row">
+      <button class="btn primary" id="btnExport"></button>
+      <button class="btn" id="btnImport"></button>
+      <input type="file" id="fileImport" accept=".json,application/json" class="hidden">
+    </div>
+    <p>ذخیره‌ی خودکار در یک فایل JSON روی کامپیوتر (فقط Chrome و Edge روی کامپیوتر):</p>
+    <div class="row">
+      <button class="btn" id="btnLinkNew">ساخت فایل دیتابیس جدید و اتصال</button>
+      <button class="btn" id="btnLinkOpen">اتصال به فایل دیتابیس موجود</button>
+    </div>
+    <div class="status" id="saveStatus"></div>
+    <button class="btn" id="btnClose">بستن</button>
+  </div>
+</dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   داده‌ی آزمون‌ها (از فایل اکسل شما)
+   ===================================================================== */
+const BASE_YEAR = 1405; // سال شمسی شروع برنامه (مرداد تا اسفند = 1405، فروردین تا تیر = 1406)
+const EXAMS = [{"id": 1, "label": "23 مرداد", "jm": 5, "jd": 23, "items": [{"id": "1-3", "subj": "زیست", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 152"}, {"id": "1-6", "subj": "فیزیک", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 104"}, {"id": "1-9", "subj": "شیمی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "1-12", "subj": "ریاضی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 166"}, {"id": "1-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "کل کتاب - صفحه 9 تا 125"}]}, {"id": 2, "label": "6 شهریور", "jm": 6, "jd": 6, "items": [{"id": "2-2", "subj": "زیست", "grade": "دهم", "text": "فصل 1 و 2"}, {"id": "2-3", "subj": "زیست", "grade": "یازدهم", "text": "فصل 1 تا 3"}, {"id": "2-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 14"}, {"id": "2-5", "subj": "فیزیک", "grade": "دهم", "text": "فصل 1 و 2 - صفحه 1 تا 40"}, {"id": "2-6", "subj": "فیزیک", "grade": "یازدهم", "text": "فصل 1- صفحه 1 تا 38"}, {"id": "2-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 15"}, {"id": "2-8", "subj": "شیمی", "grade": "دهم", "text": "فصل 1- صفحه 1 تا 46"}, {"id": "2-9", "subj": "شیمی", "grade": "یازدهم", "text": "فصل 1 - صفحه 1 تا 50"}, {"id": "2-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 13"}, {"id": "2-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 1 و 2 - صفحه 1 تا 46"}, {"id": "2-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 1 و 2 -صفحه 1 تا 46"}, {"id": "2-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 10"}]}, {"id": 3, "label": "20 شهریور", "jm": 6, "jd": 20, "items": [{"id": "3-2", "subj": "زیست", "grade": "دهم", "text": "فصل 3 و 4"}, {"id": "3-3", "subj": "زیست", "grade": "یازدهم", "text": "فصل 4 تا 6"}, {"id": "3-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 20"}, {"id": "3-5", "subj": "فیزیک", "grade": "دهم", "text": "فصل 2 و 3 - صفحه 40 تا 82"}, {"id": "3-6", "subj": "فیزیک", "grade": "یازدهم", "text": "فصل 2 - صفحه 39 تا 64"}, {"id": "3-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 26"}, {"id": "3-8", "subj": "شیمی", "grade": "دهم", "text": "فصل 2 - صفحه 47 تا 84"}, {"id": "3-9", "subj": "شیمی", "grade": "یازدهم", "text": "فصل 2 - صفحه 51 تا 98"}, {"id": "3-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 24"}, {"id": "3-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 3 و 4 - صفحه 47 تا 93"}, {"id": "3-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 3 صفحه 47 تا 70 فصل 4 صفحه 71 تا 94"}, {"id": "3-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 30"}]}, {"id": 4, "label": "3 مهر", "jm": 7, "jd": 3, "items": [{"id": "4-2", "subj": "زیست", "grade": "دهم", "text": "کل کتاب - صفحه 1 تا 111"}, {"id": "4-3", "subj": "زیست", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 152"}, {"id": "4-4", "subj": "زیست", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 120"}, {"id": "4-5", "subj": "فیزیک", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 104"}, {"id": "4-8", "subj": "شیمی", "grade": "دهم", "text": "کل کتاب- صفحه 1 تا 122"}, {"id": "4-9", "subj": "شیمی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "4-11", "subj": "ریاضی", "grade": "دهم", "text": "کل کتاب- صفحه 1 تا 170"}, {"id": "4-12", "subj": "ریاضی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 166"}, {"id": "4-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "کل کتاب - صفحه 9 تا 125"}]}, {"id": 5, "label": "24 مهر", "jm": 7, "jd": 24, "items": [{"id": "5-2", "subj": "زیست", "grade": "دهم", "text": "فصل 1 تا 3"}, {"id": "5-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 20"}, {"id": "5-5", "subj": "فیزیک", "grade": "دهم", "text": "فصل 1- صفحه 1 تا 22"}, {"id": "5-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 1 صفحه 1 تا 15"}, {"id": "5-8", "subj": "شیمی", "grade": "دهم", "text": "فصل 1 - صفحه 1 تا 38"}, {"id": "5-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 20"}, {"id": "5-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 4 - صفحه 69 تا 93"}, {"id": "5-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 1- صفحه 11 تا 24"}, {"id": "5-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 1 صفحه 1 تا 14"}, {"id": "5-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "فصل 1 صفحه 9 تا 22"}]}, {"id": 6, "label": "15 آبان", "jm": 8, "jd": 15, "items": [{"id": "6-2", "subj": "زیست", "grade": "دهم", "text": "فصل 4 و 5"}, {"id": "6-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 1 و 2 - صفحه 1 تا 36"}, {"id": "6-5", "subj": "فیزیک", "grade": "دهم", "text": "فصل 2 صفحه 23 تا 52"}, {"id": "6-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 1 صفحه 1 تا 26"}, {"id": "6-8", "subj": "شیمی", "grade": "دهم", "text": "فصل 1 و 2 - صفحه 38 تا 75"}, {"id": "6-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 36"}, {"id": "6-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 5 - صفحه 94 تا 117"}, {"id": "6-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 3- صفحه 47 تا 70"}, {"id": "6-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 1 - صفحه 1 تا 30"}, {"id": "6-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "فصل 1 و2 - صفحه 9 تا 31"}]}, {"id": 7, "label": "6 آذر", "jm": 9, "jd": 6, "items": [{"id": "7-3", "subj": "زیست", "grade": "یازدهم", "text": "فصل 1 و 2"}, {"id": "7-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 2 و 3 - صفحه 21 تا 46"}, {"id": "7-5", "subj": "فیزیک", "grade": "دهم", "text": "فصل 3 صفحه 53 تا 82"}, {"id": "7-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 1 و 2 صفحه 15 تا 44"}, {"id": "7-8", "subj": "شیمی", "grade": "دهم", "text": "فصل 2 و 3 - صفحه 76 تا 92"}, {"id": "7-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 1 و 2 - صفحه 20 تا 50"}, {"id": "7-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 2 - صفحه 28 تا 46"}, {"id": "7-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 4 - صفحه 71 تا 94"}, {"id": "7-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 1 و 2 - صفحه 15 تا 48"}, {"id": "7-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "فصل 2 صفحه 23 تا 40"}]}, {"id": 8, "label": "27 آذر", "jm": 9, "jd": 27, "items": [{"id": "8-3", "subj": "زیست", "grade": "یازدهم", "text": "فصل 3 و 4"}, {"id": "8-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 3 و 4 - صفحه 37 تا 62"}, {"id": "8-5", "subj": "فیزیک", "grade": "دهم", "text": "فصل 4 صفحه 83 تا 120"}, {"id": "8-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 2 - صفحه 27 تا 52"}, {"id": "8-8", "subj": "شیمی", "grade": "دهم", "text": "فصل 3 - صفحه 93 تا 122"}, {"id": "8-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 2 - صفحه 37 تا 66"}, {"id": "8-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 3 - صفحه 47 تا 68"}, {"id": "8-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 6 - صفحه 119 تا 142"}, {"id": "8-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 2 و 3 - صفحه 31 تا 64"}, {"id": "8-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "فصل 2 و 3- صفحه 31 تا 58"}]}, {"id": 9, "label": "11 دی", "jm": 10, "jd": 11, "items": [{"id": "9-2", "subj": "زیست", "grade": "دهم", "text": "فصل 1 تا 5"}, {"id": "9-3", "subj": "زیست", "grade": "یازدهم", "text": "فصل 1 تا 4"}, {"id": "9-5", "subj": "فیزیک", "grade": "دهم", "text": "کل کتاب - صفحه 1 تا 120"}, {"id": "9-8", "subj": "شیمی", "grade": "دهم", "text": "کل کتاب- صفحه 1 تا 122"}, {"id": "9-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 2 تا 5 - صفحه 28 تا 117"}, {"id": "9-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 1 و3 و4 و 6 صفحه 11تا24- 47 تا 94- 119 تا 142"}, {"id": "9-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "فصل 1 تا 3 صفحه 9 تا 58"}]}, {"id": 10, "label": "25 دی", "jm": 10, "jd": 25, "items": [{"id": "10-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 1 تا 4 - صفحه 1 تا 62"}, {"id": "10-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 1 و 2 - صفحه 1 تا 52"}, {"id": "10-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 1 و 2 صفحه 1 تا 66"}, {"id": "10-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 1 تا 3 صفحه 1 تا 64"}]}, {"id": 11, "label": "9 بهمن", "jm": 11, "jd": 9, "items": [{"id": "11-3", "subj": "زیست", "grade": "یازدهم", "text": "فصل 5 و 6 - صفحه 63 تا 96"}, {"id": "11-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 5 - صفحه 63 تا 76"}, {"id": "11-6", "subj": "فیزیک", "grade": "یازدهم", "text": "فصل 1 صفحه 1 تا 27"}, {"id": "11-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 3 - صفحه 53 تا 61"}, {"id": "11-9", "subj": "شیمی", "grade": "یازدهم", "text": "فصل 1 - صفحه 1 تا 29"}, {"id": "11-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 3- صفحه 67 تا 77"}, {"id": "11-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 1 صفحه 14 تا 27"}, {"id": "11-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 1و 5 - صفحه 1 تا 10 - 95تا118"}, {"id": "11-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 4 صفحه 65 تا 100"}, {"id": "11-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "فصل 4- صفحه 59 تا 76"}]}, {"id": 12, "label": "23 بهمن", "jm": 11, "jd": 23, "items": [{"id": "12-2", "subj": "زیست", "grade": "دهم", "text": "فصل 6 و 7 - صفحه 79 تا 111"}, {"id": "12-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 5 و 6 - صفحه 63 تا 90"}, {"id": "12-6", "subj": "فیزیک", "grade": "یازدهم", "text": "فصل 1 و 2 - صفحه 28 تا 55"}, {"id": "12-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 3 - صفحه 53 تا 94"}, {"id": "12-9", "subj": "شیمی", "grade": "یازدهم", "text": "فصل 1 و 2 صفحه 29 تا 65"}, {"id": "12-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 3 - صفحه 67 تا 90"}, {"id": "12-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 7 - صفحه 152 تا 170"}, {"id": "12-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 7 - صفحه 153 تا 166"}, {"id": "12-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 4 و 5 - صفحه 65 تا 120"}, {"id": "12-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "فصل 4 و 5 - صفحه 59 تا 92"}]}, {"id": 13, "label": "7 اسفند", "jm": 12, "jd": 7, "items": [{"id": "13-3", "subj": "زیست", "grade": "یازدهم", "text": "فصل 8 و 9 - صفحه 119 تا 152"}, {"id": "13-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 6 و 7 صفحه 77 تا 106"}, {"id": "13-6", "subj": "فیزیک", "grade": "یازدهم", "text": "فصل 2 و 3 - صفحه 55 تا 76"}, {"id": "13-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 3 و 4 - صفحه 61 تا 111"}, {"id": "13-9", "subj": "شیمی", "grade": "یازدهم", "text": "فصل 2 صفحه 65 تا 98"}, {"id": "13-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 3 و 4 - صفحه 77 تا 102"}, {"id": "13-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 2- صفحه 25 تا 46"}, {"id": "13-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 5 و 6 - صفحه 101 تا 142"}, {"id": "13-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "فصل 5 و 6 - صفحه 77 تا 108"}]}, {"id": 14, "label": "21 اسفند", "jm": 12, "jd": 21, "items": [{"id": "14-3", "subj": "زیست", "grade": "یازدهم", "text": "فصل 7 - صفحه 97 تا 118"}, {"id": "14-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 7 و 8 - صفحه 91 تا 124"}, {"id": "14-6", "subj": "فیزیک", "grade": "یازدهم", "text": "فصل 3 صفحه 76 تا 104"}, {"id": "14-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 4 صفحه 95 تا 125"}, {"id": "14-9", "subj": "شیمی", "grade": "یازدهم", "text": "فصل 3- صفحه 99 تا 123"}, {"id": "14-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 4 - صفحه 91 تا 123"}, {"id": "14-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 6 و7 و1- صفحه 1 تا 13- 118 تا 151"}, {"id": "14-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 7 صفحه 143 تا 152"}, {"id": "14-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 6 و 7 - صفحه 121 تا 148"}, {"id": "14-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "فصل 6 و 7 - صفحه 93 تا 125"}]}, {"id": 15, "label": "28 اسفند", "jm": 12, "jd": 28, "items": [{"id": "15-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 5 تا 8 - صفحه 63 تا 124"}, {"id": "15-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 3 و 4 - صفحه 53 تا 125"}, {"id": "15-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 3 و 4 صفحه 67 تا 123"}, {"id": "15-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 4 تا 7 - صفحه 65 تا 148"}]}, {"id": 16, "label": "20 فروردین", "jm": 1, "jd": 20, "items": [{"id": "16-2", "subj": "زیست", "grade": "دهم", "text": "کل کتاب - صفحه 1 تا 111"}, {"id": "16-3", "subj": "زیست", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 152"}, {"id": "16-5", "subj": "فیزیک", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 120"}, {"id": "16-6", "subj": "فیزیک", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 104"}, {"id": "16-8", "subj": "شیمی", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 122"}, {"id": "16-9", "subj": "شیمی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "16-11", "subj": "ریاضی", "grade": "دهم", "text": "کل کتاب - صفحه 1 تا 170"}, {"id": "16-12", "subj": "ریاضی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 166"}, {"id": "16-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "کل کتاب- صفحه 9 تا 125"}]}, {"id": 17, "label": "27 فروردین", "jm": 1, "jd": 27, "items": [{"id": "17-2", "subj": "زیست", "grade": "دهم", "text": "جمع بندی جانوری + ژنتیک جانوری"}, {"id": "17-3", "subj": "زیست", "grade": "یازدهم", "text": "جمع بندی جانوری + ژنتیک جانوری"}, {"id": "17-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 1 تا 4 صفحه 1 تا 62"}, {"id": "17-5", "subj": "فیزیک", "grade": "دهم", "text": "بررسی تمرین فعالیت و شکل"}, {"id": "17-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 1 و 2- صفحه 1 تا 52"}, {"id": "17-8", "subj": "شیمی", "grade": "دهم", "text": "مفاهیم"}, {"id": "17-9", "subj": "شیمی", "grade": "یازدهم", "text": "مفاهیم"}, {"id": "17-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 1 و 2 صفحه 1 تا 66"}, {"id": "17-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 3 و 4 - صفحه 47 تا 93"}, {"id": "17-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 1 - صفحه 1 تا 24"}, {"id": "17-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 1 تا 3 - صفحه 1 تا 64"}, {"id": "17-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "فصل 1 تا 3 صفحه 9 تا 58"}]}, {"id": 18, "label": "3 اردیبهشت", "jm": 2, "jd": 3, "items": [{"id": "18-2", "subj": "زیست", "grade": "دهم", "text": "جمع بندی گیاهی + ژنتیک گیاهی"}, {"id": "18-3", "subj": "زیست", "grade": "یازدهم", "text": "جمع بندی گیاهی + ژنتیک گیاهی"}, {"id": "18-4", "subj": "زیست", "grade": "دوازدهم", "text": "فصل 5 تا 8 - صفحه 63 تا 124"}, {"id": "18-6", "subj": "فیزیک", "grade": "یازدهم", "text": "بررسی تمرین فعالیت و شکل"}, {"id": "18-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "فصل 3 و 4 - صفحه 53 تا 125"}, {"id": "18-8", "subj": "شیمی", "grade": "دهم", "text": "مسائل"}, {"id": "18-9", "subj": "شیمی", "grade": "یازدهم", "text": "مسائل"}, {"id": "18-10", "subj": "شیمی", "grade": "دوازدهم", "text": "فصل 3 و 4 - صفحه 67 تا 123"}, {"id": "18-11", "subj": "ریاضی", "grade": "دهم", "text": "فصل 6 و7 - صفحه 118 تا 170"}, {"id": "18-12", "subj": "ریاضی", "grade": "یازدهم", "text": "فصل 2 - صفحه 25 تا 46"}, {"id": "18-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "فصل 4 تا 7 - صفحه 65 تا 148"}, {"id": "18-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "فصل 4 تا 7 - صفحه 59 تا 125"}]}, {"id": 19, "label": "10 اردیبهشت", "jm": 2, "jd": 10, "items": [{"id": "19-2", "subj": "زیست", "grade": "دهم", "text": "کل کتاب- صفحه 1 تا 111"}, {"id": "19-3", "subj": "زیست", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 152"}, {"id": "19-4", "subj": "زیست", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 124"}, {"id": "19-5", "subj": "فیزیک", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 120"}, {"id": "19-6", "subj": "فیزیک", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 104"}, {"id": "19-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 125"}, {"id": "19-8", "subj": "شیمی", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 122"}, {"id": "19-9", "subj": "شیمی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "19-10", "subj": "شیمی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "19-11", "subj": "ریاضی", "grade": "دهم", "text": "کل کتاب - صفحه 1 تا 170"}, {"id": "19-12", "subj": "ریاضی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 166"}, {"id": "19-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 148"}, {"id": "19-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "کل کتاب- صفحه 9 تا 125"}]}, {"id": 20, "label": "24 اردیبهشت", "jm": 2, "jd": 24, "items": [{"id": "20-4", "subj": "زیست", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 124"}, {"id": "20-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 125"}, {"id": "20-10", "subj": "شیمی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "20-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 148"}]}, {"id": 21, "label": "21 خرداد", "jm": 3, "jd": 21, "items": [{"id": "21-2", "subj": "زیست", "grade": "دهم", "text": "کل کتاب- صفحه 1 تا 111"}, {"id": "21-3", "subj": "زیست", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 152"}, {"id": "21-4", "subj": "زیست", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 124"}, {"id": "21-5", "subj": "فیزیک", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 120"}, {"id": "21-6", "subj": "فیزیک", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 104"}, {"id": "21-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 125"}, {"id": "21-8", "subj": "شیمی", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 122"}, {"id": "21-9", "subj": "شیمی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "21-10", "subj": "شیمی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "21-11", "subj": "ریاضی", "grade": "دهم", "text": "کل کتاب - صفحه 1 تا 170"}, {"id": "21-12", "subj": "ریاضی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 166"}, {"id": "21-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 148"}, {"id": "21-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "کل کتاب- صفحه 9 تا 125"}]}, {"id": 22, "label": "28 خرداد", "jm": 3, "jd": 28, "items": [{"id": "22-2", "subj": "زیست", "grade": "دهم", "text": "کل کتاب- صفحه 1 تا 111"}, {"id": "22-3", "subj": "زیست", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 152"}, {"id": "22-4", "subj": "زیست", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 124"}, {"id": "22-5", "subj": "فیزیک", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 120"}, {"id": "22-6", "subj": "فیزیک", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 104"}, {"id": "22-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 125"}, {"id": "22-8", "subj": "شیمی", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 122"}, {"id": "22-9", "subj": "شیمی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "22-10", "subj": "شیمی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "22-11", "subj": "ریاضی", "grade": "دهم", "text": "کل کتاب - صفحه 1 تا 170"}, {"id": "22-12", "subj": "ریاضی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 166"}, {"id": "22-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 148"}, {"id": "22-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "کل کتاب- صفحه 9 تا 125"}]}, {"id": 23, "label": "4 تیر", "jm": 4, "jd": 4, "items": [{"id": "23-2", "subj": "زیست", "grade": "دهم", "text": "کل کتاب- صفحه 1 تا 111"}, {"id": "23-3", "subj": "زیست", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 152"}, {"id": "23-4", "subj": "زیست", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 124"}, {"id": "23-5", "subj": "فیزیک", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 120"}, {"id": "23-6", "subj": "فیزیک", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 104"}, {"id": "23-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 125"}, {"id": "23-8", "subj": "شیمی", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 122"}, {"id": "23-9", "subj": "شیمی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "23-10", "subj": "شیمی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "23-11", "subj": "ریاضی", "grade": "دهم", "text": "کل کتاب - صفحه 1 تا 170"}, {"id": "23-12", "subj": "ریاضی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 166"}, {"id": "23-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 148"}, {"id": "23-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "کل کتاب- صفحه 9 تا 125"}]}, {"id": 24, "label": "آخرین آزمون", "jm": null, "jd": null, "items": [{"id": "24-2", "subj": "زیست", "grade": "دهم", "text": "کل کتاب- صفحه 1 تا 111"}, {"id": "24-3", "subj": "زیست", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 152"}, {"id": "24-4", "subj": "زیست", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 124"}, {"id": "24-5", "subj": "فیزیک", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 120"}, {"id": "24-6", "subj": "فیزیک", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 104"}, {"id": "24-7", "subj": "فیزیک", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 125"}, {"id": "24-8", "subj": "شیمی", "grade": "دهم", "text": "کل کتاب صفحه 1 تا 122"}, {"id": "24-9", "subj": "شیمی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "24-10", "subj": "شیمی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 123"}, {"id": "24-11", "subj": "ریاضی", "grade": "دهم", "text": "کل کتاب - صفحه 1 تا 170"}, {"id": "24-12", "subj": "ریاضی", "grade": "یازدهم", "text": "کل کتاب - صفحه 1 تا 166"}, {"id": "24-13", "subj": "ریاضی", "grade": "دوازدهم", "text": "کل کتاب - صفحه 1 تا 148"}, {"id": "24-14", "subj": "زمین شناسی", "grade": "یازدهم", "text": "کل کتاب- صفحه 9 تا 125"}]}];
+
+const MONTHS = {1:'فروردین',2:'اردیبهشت',3:'خرداد',4:'تیر',5:'مرداد',6:'شهریور',7:'مهر',8:'آبان',9:'آذر',10:'دی',11:'بهمن',12:'اسفند'};
+const SUBJ_KEY = {'زیست':'bio','فیزیک':'phys','شیمی':'chem','ریاضی':'math','زمین شناسی':'geo'};
+const REPORT_SUBJECTS = [['math','ریاضی'],['phys','فیزیک'],['chem','شیمی'],['bio','زیست'],['geo','زمین‌شناسی']];
+const GENERAL = [
+  {key:'fa',   name:'فارسی',          n:16},
+  {key:'hov',  name:'هویت',           n:10},
+  {key:'din',  name:'دین و زندگی',    n:10},
+  {key:'en',   name:'زبان',           n:3},
+  {key:'ar',   name:'عربی',           n:4},
+  {key:'salam',name:'سلامت و بهداشت', n:14}
+];
+
+const QUOTES = [
+"هر صفحه‌ای که امروز می‌خوانی، یک پله تو را به رتبه‌ی دلخواهت نزدیک‌تر می‌کند.",
+"کنکور مسابقه‌ی سرعت نیست؛ ماراتنی است که با ثبات برنده می‌شود.",
+"امروز را جدی بگیر تا فردا خودت را تحسین کنی.",
+"تست غلط دشمن نیست؛ معلمی است که اشتباه را پیش از جلسه‌ی کنکور نشانت می‌دهد.",
+"انگیزه شروع می‌کند، عادت ادامه می‌دهد.",
+"یک ساعت تمرکز کامل از سه ساعت مطالعه‌ی پراکنده ارزشمندتر است.",
+"به جای مقایسه با دیگران، با خودِ دیروزت رقابت کن.",
+"خستگی موقتی است، افتخار رتبه‌ات ماندگار.",
+"آزمون آزمایشی تمرین شجاعت است، نه قضاوت درباره‌ی توانایی تو.",
+"هر مبحثی که امروز تیک می‌خورد، فردا یک نگرانی کمتر دارد.",
+"برنامه‌ی ساده‌ای که اجرا شود از برنامه‌ی کامل روی کاغذ بهتر است.",
+"نتیجه‌ی بزرگ از کارهای کوچکِ هر روز ساخته می‌شود.",
+"وقتی دلت می‌خواهد کنار بگذاری، همان لحظه جای شروعِ پیشرفت است.",
+"تراز بالا از دل ساعت‌های بی‌سروصدای مرور ساخته می‌شود.",
+"اشتباه‌های امروز را یادداشت کن تا در جلسه‌ی کنکور تکرار نشوند.",
+"شب قبل از آزمون خوب بخواب؛ مغزِ خسته تست نمی‌زند.",
+"سخت‌ترین قدم، باز کردن کتاب است؛ بقیه‌اش راحت‌تر می‌شود.",
+"تو برای این مسیر ساخته شده‌ای؛ فقط ادامه بده.",
+"مرور راز ماندگاری است؛ یک بار خواندن کافی نیست.",
+"اگر هر روز یک درصد بهتر شوی، تا یک سال دیگر حدود سی‌وهفت برابر قوی‌تری.",
+"تمرکز یعنی گوشی را دور بگذاری و فقط یک کار را انجام بدهی.",
+"کسی که برنامه دارد کمتر نگران است و بیشتر پیش می‌رود.",
+"هر درصدی که در آزمون می‌گیری، داده‌ای است برای برنامه‌ریزی بهتر.",
+"صبور باش؛ ریشه‌ها قبل از میوه‌ها رشد می‌کنند.",
+"درسِ امروز را به فردا نینداز؛ فردا کار خودش را دارد.",
+"تست زدن یعنی تمرین جنگیدن پیش از نبرد اصلی.",
+"وقتی خسته‌ای استراحت کن، نه اینکه تسلیم شوی.",
+"هدف روشن، نیمی از راه است.",
+"کنکور را تکه‌تکه کن: هفته، روز، مبحث. بعد یکی‌یکی تمامش کن.",
+"هر فصلِ تمام‌شده یک پیروزی کوچک است؛ جشنش را بگیر.",
+"سؤال‌های نهایی را جدی بگیر؛ پایه‌ی محکم‌ترین درصدها همان‌جاست.",
+"نمره‌ی یک آزمون تصویر یک روز است، نه سرنوشت تو.",
+"اگر امروز سخت است، یعنی داری از دیروزِ خودت جلو می‌افتی.",
+"فقط به خط پایان نگاه نکن؛ هر روز قدم بعدی را بردار.",
+"قوی‌ترین رقیبت تنبلیِ ده دقیقه‌ی اول است؛ از آن عبور کن.",
+"زیست را بخوان، شیمی را بفهم، فیزیک را حل کن، ریاضی را تمرین کن.",
+"با نظم، استعدادِ معمولی هم به قله می‌رسد؛ بی‌نظمی استعدادِ زیاد را هم زمین می‌زند.",
+"وقتی نتیجه‌ی آزمون خوب نبود، برنامه را اصلاح کن نه اعتمادبه‌نفست را.",
+"آرامش را از مرور منظم بساز، نه از امیدواری.",
+"هر روز که می‌خوانی، روی آینده‌ی خودت سرمایه‌گذاری می‌کنی.",
+"با خودت مهربان باش، ولی با برنامه‌ات جدی.",
+"زمان کمتر از آن است که فکر می‌کنی و توانایی‌ات بیشتر.",
+"قبل از شروع تست هدفت را مشخص کن: سرعت، دقت یا یادگیری؟",
+"گاهی دقیق‌تر بودن در تست بیشتر از سریع‌تر بودن به درصد کمک می‌کند.",
+"هر روز یک مبحث ضعیف را انتخاب کن و با آن آشتی کن.",
+"موفقیت یک روزِ بزرگ نیست؛ مجموعه‌ی روزهای معمولیِ خوب است.",
+"اگر دیروز خوب نخواندی، امروز فرصت جبران است.",
+"دانشگاه رویایی‌ات منتظر برنامه‌ی امروز توست.",
+"ساعت مطالعه مهم است، اما ساعتِ باکیفیت مهم‌تر.",
+"تمرین، ترس از آزمون را کم می‌کند.",
+"چیزی که امروز سخت است، تا هفته‌ی دیگر عادی می‌شود.",
+"یادداشت‌های خوبِ امروز نجات‌دهنده‌ی شب‌های قبل از آزمون‌اند.",
+"از هر آزمون یک درس تازه بگیر؛ حتی اگر نتیجه دلخواهت نبود.",
+"روزی را تصور کن که این زحمت‌ها را با لبخند مرور می‌کنی.",
+"فقط کافی است امروز بهتر از دیروز باشی.",
+"پشتکار از استعدادِ تنبل برنده‌تر است.",
+"نگران نتیجه نباش؛ روی کاری که امروز در اختیار توست تمرکز کن.",
+"هر استراحتِ کوتاه باتری مغزت را برای دور بعدی شارژ می‌کند.",
+"هر کسی که این مسیر را رفته، بارها فکر کرده نمی‌شود؛ ولی ادامه داده.",
+"تو از آنچه فکر می‌کنی به هدفت نزدیک‌تری؛ فقط ادامه بده."
+];
+
+/* =====================================================================
+   ابزارهای تاریخ شمسی
+   ===================================================================== */
+function jalaliToGregorian(jy,jm,jd){jy+=1595;let days=-355668+(365*jy)+Math.floor(jy/33)*8+Math.floor(((jy%33)+3)/4)+jd+(jm<7?(jm-1)*31:((jm-7)*30)+186);let gy=400*Math.floor(days/146097);days%=146097;if(days>36524){gy+=100*Math.floor(--days/36524);days%=36524;if(days>=365)days++;}gy+=4*Math.floor(days/1461);days%=1461;if(days>365){gy+=Math.floor((days-1)/365);days=(days-1)%365;}let gd=days+1;const sa=[0,31,((gy%4==0&&gy%100!=0)||(gy%400==0))?29:28,31,30,31,30,31,31,30,31,30,31];let gm;for(gm=0;gm<13&&gd>sa[gm];gm++)gd-=sa[gm];return[gy,gm,gd];}
+function gregorianToJalali(gy,gm,gd){const g=[0,31,59,90,120,151,181,212,243,273,304,334];const gy2=gm>2?gy+1:gy;let days=355666+(365*gy)+Math.floor((gy2+3)/4)-Math.floor((gy2+99)/100)+Math.floor((gy2+399)/400)+gd+g[gm-1];let jy=-1595+(33*Math.floor(days/12053));days%=12053;jy+=4*Math.floor(days/1461);days%=1461;if(days>365){jy+=Math.floor((days-1)/365);days=(days-1)%365;}const jm=days<186?1+Math.floor(days/31):7+Math.floor((days-186)/30);const jd=1+(days<186?days%31:(days-186)%30);return[jy,jm,jd];}
+
+const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const normNum = s => String(s).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[٫،,]/g,'.').replace(/[^\d.\-]/g,'');
+
+function dayNumOf(y,m,d){ return Math.round(Date.UTC(y,m-1,d)/86400000); }
+function todayNum(){ const t=new Date(); return dayNumOf(t.getFullYear(),t.getMonth()+1,t.getDate()); }
+
+// برای هر آزمون تاریخ میلادی و شماره روز محاسبه می‌شود
+EXAMS.forEach(e=>{
+  if(e.jm){
+    e.jy = e.jm >= 5 ? BASE_YEAR : BASE_YEAR+1;
+    const [gy,gm,gd] = jalaliToGregorian(e.jy,e.jm,e.jd);
+    e.dayNum = dayNumOf(gy,gm,gd);
+    e.title = `${fa(e.jd)} ${MONTHS[e.jm]}`;
+  } else { e.dayNum = Infinity; e.title = 'آخرین آزمون'; }
+});
+const TODAY = todayNum();
+const NEXT = EXAMS.find(e => e.dayNum >= TODAY) || EXAMS[EXAMS.length-1];
+function examState(e){
+  if(e.id === NEXT.id) return e.dayNum === TODAY ? 'today' : 'next';
+  return e.dayNum < TODAY ? 'past' : 'future';
+}
+function relText(e){
+  if(!isFinite(e.dayNum)) return 'تاریخ: پس از آزمون‌های قبلی';
+  const d = e.dayNum - TODAY;
+  if(d === 0) return 'امروز';
+  if(d === 1) return 'فردا';
+  if(d > 1) return `${fa(d)} روز دیگر`;
+  return `${fa(-d)} روز پیش`;
+}
+
+/* =====================================================================
+   ذخیره‌سازی (localStorage + پشتیبان JSON + اتصال اختیاری به فایل)
+   ===================================================================== */
+const LS_KEY = 'khilisabz_planner_v1';
+function defaultState(){ return {app:'khilisabz-planner', version:1, study:{}, reports:{}, general:{}, theme:null}; }
+function loadState(){
+  try{ const raw = localStorage.getItem(LS_KEY); if(raw) return Object.assign(defaultState(), JSON.parse(raw)); }catch(e){}
+  return defaultState();
+}
+let state = loadState();
+let fileHandle = null, fileTimer = null, lastSaved = null;
+
+function save(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); lastSaved = new Date(); }catch(e){ toast('ذخیره در مرورگر ممکن نشد؛ لطفاً پشتیبان بگیرید.'); }
+  if(fileHandle){ clearTimeout(fileTimer); fileTimer = setTimeout(writeLinkedFile, 600); }
+  updateStatus();
+}
+async function writeLinkedFile(){
+  if(!fileHandle) return;
+  try{
+    const w = await fileHandle.createWritable();
+    await w.write(JSON.stringify(state,null,2));
+    await w.close();
+  }catch(e){ toast('نوشتن در فایل متصل ممکن نشد.'); }
+  updateStatus();
+}
+function updateStatus(){
+  const el = document.getElementById('saveStatus'); if(!el) return;
+  const t = lastSaved ? lastSaved.toLocaleTimeString('fa-IR') : '—';
+  el.innerHTML = `ذخیره در مرورگر: <b>فعال</b> (آخرین ذخیره: ${t})<br>فایل متصل: <b>${fileHandle ? esc(fileHandle.name) : 'متصل نیست'}</b>`;
+}
+function exportBackup(){
+  const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
+  const t = new Date(); const stamp = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')}`;
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `dar-masir-pezeshki-backup-${stamp}.json`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+  toast('فایل پشتیبان دانلود شد.');
+}
+function applyImported(obj){
+  if(!obj || typeof obj !== 'object' || obj.app !== 'khilisabz-planner'){ toast('این فایل، پشتیبان این برنامه نیست.'); return false; }
+  state = Object.assign(defaultState(), obj); save(); applyTheme(state.theme || preferredTheme()); renderTab(); return true;
+}
+function importBackup(file){
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const obj = JSON.parse(r.result);
+      if(!confirm('اطلاعات فعلی با محتوای این فایل جایگزین می‌شود. ادامه می‌دهید؟')) return;
+      if(applyImported(obj)) toast('پشتیبان با موفقیت بازیابی شد.');
+    }catch(e){ toast('فایل معتبر نیست.'); }
+  };
+  r.readAsText(file);
+}
+async function linkNewFile(){
+  if(!window.showSaveFilePicker){ toast('این مرورگر از اتصال به فایل پشتیبانی نمی‌کند؛ از پشتیبان‌گیری دستی استفاده کنید.'); return; }
+  try{
+    fileHandle = await window.showSaveFilePicker({suggestedName:'dar-masir-pezeshki-data.json', types:[{description:'JSON', accept:{'application/json':['.json']}}]});
+    await writeLinkedFile(); toast('متصل شد؛ از این به بعد تغییرات در فایل هم ذخیره می‌شود.');
+  }catch(e){ /* کاربر لغو کرد */ }
+}
+async function linkOpenFile(){
+  if(!window.showOpenFilePicker){ toast('این مرورگر از اتصال به فایل پشتیبانی نمی‌کند؛ از پشتیبان‌گیری دستی استفاده کنید.'); return; }
+  try{
+    const [h] = await window.showOpenFilePicker({types:[{description:'JSON', accept:{'application/json':['.json']}}]});
+    const text = await (await h.getFile()).text();
+    const obj = JSON.parse(text);
+    if(!confirm('اطلاعات فعلی با محتوای این فایل جایگزین می‌شود. ادامه می‌دهید؟')) return;
+    if(applyImported(obj)){ fileHandle = h; await h.requestPermission({mode:'readwrite'}); updateStatus(); toast('فایل بارگذاری و متصل شد.'); }
+  }catch(e){ /* لغو یا خطا */ }
+}
+
+/* =====================================================================
+   تم تیره / روشن
+   ===================================================================== */
+const ICONS = {
+  sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>',
+  data:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>',
+  refresh:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>',
+  down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>',
+  up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7 8l5-5 5 5M4 21h16"/></svg>',
+  chev:'<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
+  study:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M9 8h6"/></svg>',
+  report:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  unread:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h12M3 18h8"/><circle cx="19" cy="17" r="3"/></svg>',
+  general:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>'
+};
+function preferredTheme(){ return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('btnTheme').innerHTML = t === 'dark' ? ICONS.sun : ICONS.moon;
+}
+
+/* =====================================================================
+   وضعیت‌ها و محاسبه‌ها
+   ===================================================================== */
+const getS = k => state.study[k] || {r:false,t:false,f:false,note:''};
+function setS(k, f, v){ const s = Object.assign({r:false,t:false,f:false,note:''}, state.study[k]); s[f] = v; state.study[k] = s; save(); }
+function examProgress(e){
+  let done = 0; e.items.forEach(it => { const s = getS(it.id); done += (s.r?1:0)+(s.t?1:0)+(s.f?1:0); });
+  const total = e.items.length*3; return {done,total,pct: total ? Math.round(done*100/total) : 0};
+}
+const getR = id => state.reports[id] || {scores:{}, rank:'', taraz:''};
+function setR(id, field, val){
+  const r = JSON.parse(JSON.stringify(getR(id)));
+  if(field === 'rank' || field === 'taraz') r[field] = val; else r.scores[field] = val;
+  state.reports[id] = r; save();
+}
+const getG = (key,i) => (state.general[key] && state.general[key][i]) || {s:false,f:false};
+function setG(key,i,f,v){
+  state.general[key] = state.general[key] || {};
+  state.general[key][i] = Object.assign({s:false,f:false}, state.general[key][i]); state.general[key][i][f] = v; save();
+}
+const isNum = v => v !== '' && v != null && !isNaN(parseFloat(v));
+
+/* =====================================================================
+   کامپوننت‌های ظاهری
+   ===================================================================== */
+function examHeadHtml(e, metaHtml, extraBar){
+  const st = examState(e);
+  const badge = st==='next' ? '<span class="badge next">آزمون پیش رو</span>' : st==='today' ? '<span class="badge today">امروز</span>' : st==='past' ? '<span class="badge">برگزار شد</span>' : '';
+  const dateBox = e.jm ? `<b>${fa(e.jd)}</b><small>${MONTHS[e.jm]}</small>` : `<b>★</b><small>پایانی</small>`;
+  return `<button class="exam-head" data-toggle>
+    <div class="date-box">${dateBox}</div>
+    <div class="head-info">
+      <div class="head-title">${esc(e.title)} ${badge}</div>
+      <div class="head-meta">${relText(e)}${metaHtml ? ' · ' + metaHtml : ''}</div>
+      ${extraBar || ''}
+    </div>
+    ${ICONS.chev}
+  </button>`;
+}
+function progBarHtml(e){
+  const p = examProgress(e);
+  return `<div class="bar" data-prog-bar="${e.id}"><div style="width:${p.pct}%"></div></div>`;
+}
+function progTextHtml(e){
+  const p = examProgress(e);
+  return `<span data-prog-text="${e.id}">${fa(p.pct)}٪ انجام شده</span>`;
+}
+function itemHtml(e, it, opts={}){
+  const s = getS(it.id), key = SUBJ_KEY[it.subj] || 'bio';
+  const chk = (f,l) => `<label class="chip"><input type="checkbox" data-k="${it.id}" data-f="${f}" ${s[f]?'checked':''}><span>${l}</span></label>`;
+  return `<div class="item" data-item="${it.id}">
+    <div class="item-top"><span class="subj s-${key}">${esc(it.subj)}</span><span class="grade">${esc(it.grade)}</span><span class="topic">${esc(it.text)}</span></div>
+    <div class="checks">${chk('r','مطالعه')}${chk('t','تست')}${chk('f','سوال نهایی')}</div>
+    ${opts.missing ? `<div class="missing" data-missing="${it.id}">${missingHtml(s)}</div>` : ''}
+    <textarea class="note" rows="1" data-k="${it.id}" data-f="note" placeholder="یادداشت...">${esc(s.note)}</textarea>
+  </div>`;
+}
+function missingHtml(s){
+  const m = [['r','مطالعه'],['t','تست'],['f','سوال نهایی']].filter(([f]) => !s[f]);
+  return m.length ? 'مانده: ' + m.map(([,l]) => `<span>${l}</span>`).join('') : '<em>همه وضعیت‌ها تیک خورده ✓</em>';
+}
+function refreshProgress(examId){
+  const e = EXAMS.find(x => String(x.id) === String(examId)); if(!e) return;
+  const p = examProgress(e);
+  document.querySelectorAll(`[data-prog-text="${e.id}"]`).forEach(el => el.textContent = `${fa(p.pct)}٪ انجام شده`);
+  document.querySelectorAll(`[data-prog-bar="${e.id}"] > div`).forEach(el => el.style.width = p.pct + '%');
+}
+function growTextareas(root=document){ root.querySelectorAll('textarea.note').forEach(t => { t.style.height='auto'; t.style.height = Math.max(40, t.scrollHeight) + 'px'; }); }
+
+/* =====================================================================
+   تب ۱: برنامه مطالعه
+   ===================================================================== */
+const openSets = {study:new Set([NEXT.id]), report:new Set([NEXT.id])};
+
+function renderStudy(){
+  const html = EXAMS.map(e => {
+    const st = examState(e), open = openSets.study.has(e.id) ? ' open' : '';
+    return `<article class="exam ${st}${open}" data-exam="${e.id}" data-set="study">
+      ${examHeadHtml(e, progTextHtml(e) + ` · ${fa(e.items.length)} مبحث`, progBarHtml(e))}
+      <div class="exam-body">${e.items.map(it => itemHtml(e,it)).join('')}</div>
+    </article>`;
+  }).join('');
+  return `<div class="page-head"><div><h2>برنامه مطالعه</h2><p>روی هر آزمون بزنید تا مباحث و وضعیت آن‌ها باز شود.</p></div>
+    <div class="legend"><span><i style="background:var(--next)"></i>آزمون پیش رو</span><span><i style="background:var(--line)"></i>گذشته</span></div></div>${html}`;
+}
+
+/* =====================================================================
+   تب ۲: گزارش آزمون
+   ===================================================================== */
+function reportSummary(e){
+  const r = getR(e.id);
+  const n = REPORT_SUBJECTS.filter(([k]) => isNum(r.scores[k])).length;
+  const parts = [];
+  parts.push(n ? `${fa(n)} نمره ثبت شده` : 'نمره‌ای ثبت نشده');
+  if(isNum(r.taraz)) parts.push(`تراز ${fa(r.taraz)}`);
+  if(isNum(r.rank)) parts.push(`رتبه ${fa(r.rank)}`);
+  return parts.join(' · ');
+}
+function renderReport(){
+  const html = EXAMS.map(e => {
+    const st = examState(e), open = openSets.report.has(e.id) ? ' open' : '', r = getR(e.id);
+    const inSubjects = new Set(e.items.map(it => SUBJ_KEY[it.subj]));
+    const fields = REPORT_SUBJECTS.map(([k,l]) => `<div class="field ${inSubjects.has(k)?'':'off'}">
+        <label><span class="dot" style="--c:var(--c-${k})"></span>${l}</label>
+        <input class="num" inputmode="decimal" autocomplete="off" placeholder="نمره" data-rx="${e.id}" data-rf="${k}" value="${esc(r.scores[k] ?? '')}"></div>`).join('');
+    return `<article class="exam ${st}${open}" data-exam="${e.id}" data-set="report">
+      ${examHeadHtml(e, `<span data-rsum="${e.id}">${reportSummary(e)}</span>`)}
+      <div class="exam-body"><div class="score-grid">${fields}<div class="sep"></div>
+        <div class="field"><label>رتبه کشوری</label><input class="num" inputmode="numeric" autocomplete="off" placeholder="مثلاً ۱۲۰۰" data-rx="${e.id}" data-rf="rank" value="${esc(r.rank ?? '')}"></div>
+        <div class="field"><label>تراز</label><input class="num" inputmode="numeric" autocomplete="off" placeholder="مثلاً ۶۸۰۰" data-rx="${e.id}" data-rf="taraz" value="${esc(r.taraz ?? '')}"></div>
+      </div></div>
+    </article>`;
+  }).join('');
+  return `<div class="page-head"><div><h2>گزارش آزمون</h2><p>نمره‌ی هر درس، رتبه‌ی کشوری و تراز را برای هر آزمون ثبت کنید.</p></div></div>${html}
+    <div class="chart-card"><h3>نمودار تراز</h3><p>تراز هر آزمون به ترتیب تاریخ.</p><div class="chart-scroll" id="chartTaraz"></div></div>
+    <div class="chart-card"><h3>نمودار رتبه کشوری</h3><p>محور برعکس است: هرچه نقطه بالاتر باشد، رتبه بهتر است.</p><div class="chart-scroll" id="chartRank"></div></div>`;
+}
+function lineChart(points, color, reverse){
+  if(!points.length) return '<div class="empty">با ثبت اولین مقدار، نمودار اینجا نمایش داده می‌شود.</div>';
+  const W = 640, H = 270, pl = 58, pr = 18, pt = 24, pb = 62;
+  const vals = points.map(p => p.v);
+  let min = Math.min(...vals), max = Math.max(...vals);
+  if(min === max){ min -= 1; max += 1; }
+  const pad = (max-min)*0.12; min -= pad; max += pad;
+  const iw = W-pl-pr, ih = H-pt-pb;
+  const x = i => points.length === 1 ? pl+iw/2 : pl + iw*i/(points.length-1);
+  const y = v => { const t = (v-min)/(max-min); return pt + ih*(reverse ? t : 1-t); };
+  let g = '';
+  for(let i=0;i<=4;i++){
+    const val = min + (max-min)*i/4, yy = reverse ? pt+ih*i/4 : pt+ih*(1-i/4);
+    g += `<line class="grid" x1="${pl}" x2="${W-pr}" y1="${yy}" y2="${yy}"/><text x="${pl-8}" y="${yy+4}" text-anchor="end" font-size="11">${fa(Math.round(val))}</text>`;
+  }
+  const path = points.map((p,i) => `${i?'L':'M'}${x(i).toFixed(1)} ${y(p.v).toFixed(1)}`).join(' ');
+  const dots = points.map((p,i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="4.5" fill="${color}" stroke="var(--surface)" stroke-width="2"><title>${p.label}: ${fa(p.v)}</title></circle>`).join('');
+  const showVals = points.length <= 12;
+  const vtxt = showVals ? points.map((p,i) => `<text class="val" x="${x(i).toFixed(1)}" y="${(y(p.v)-10).toFixed(1)}" text-anchor="middle" font-size="11">${fa(p.v)}</text>`).join('') : '';
+  const xl = points.map((p,i) => `<text x="${x(i).toFixed(1)}" y="${H-pb+16}" text-anchor="end" font-size="11" transform="rotate(-40 ${x(i).toFixed(1)} ${H-pb+16})">${p.label}</text>`).join('');
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="نمودار">${g}<path d="${path}" fill="none" stroke="${color}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>${dots}${vtxt}${xl}</svg>`;
+}
+function renderCharts(){
+  const tz = [], rk = [];
+  EXAMS.forEach(e => { const r = getR(e.id);
+    if(isNum(r.taraz)) tz.push({label:e.title, v:parseFloat(r.taraz)});
+    if(isNum(r.rank))  rk.push({label:e.title, v:parseFloat(r.rank)}); });
+  const a = document.getElementById('chartTaraz'), b = document.getElementById('chartRank');
+  if(a) a.innerHTML = lineChart(tz, 'var(--chart1)', false);
+  if(b) b.innerHTML = lineChart(rk, 'var(--chart2)', true);
+}
+
+/* =====================================================================
+   تب ۳: مباحث خوانده‌نشده (قابل فیلتر)
+   ===================================================================== */
+let UF = {exam:String(NEXT.id), subj:'all', status:'any'};
+function renderUnread(){
+  const examOpts = [['all','همه آزمون‌ها'],['upcoming','آزمون پیش رو و بعدی‌ها'],['past','آزمون‌های گذشته']]
+    .concat(EXAMS.map(e => [String(e.id), e.title + (e.id===NEXT.id ? ' (پیش رو)' : '')]));
+  const sel = (id, label, opts, cur) => `<div class="field"><label>${label}</label><select class="sel" id="${id}">${opts.map(([v,t]) => `<option value="${v}" ${String(v)===String(cur)?'selected':''}>${t}</option>`).join('')}</select></div>`;
+  return `<div class="page-head"><div><h2>گزارش مباحث خوانده‌نشده</h2><p>هر مبحثی که حتی یکی از سه وضعیتش تیک نخورده باشد اینجا می‌آید.</p></div></div>
+    <div class="filters">
+      ${sel('ufExam','آزمون',examOpts,UF.exam)}
+      ${sel('ufSubj','درس',[['all','همه درس‌ها']].concat(REPORT_SUBJECTS.map(([k,l])=>[k,l])),UF.subj)}
+      ${sel('ufStatus','نمایش مباحثی که',[['any','هر وضعیتی که تیک نخورده'],['r','فقط مطالعه نشده'],['t','فقط تست نزده'],['f','فقط سوال نهایی نزده']],UF.status)}
+    </div>
+    <div class="summary" id="ufSummary"></div><div id="ufList"></div>`;
+}
+function renderUnreadList(){
+  let exams = EXAMS;
+  if(UF.exam === 'upcoming') exams = EXAMS.filter(e => e.dayNum >= TODAY || e.id === NEXT.id);
+  else if(UF.exam === 'past') exams = EXAMS.filter(e => e.dayNum < TODAY);
+  else if(UF.exam !== 'all') exams = EXAMS.filter(e => String(e.id) === UF.exam);
+  const miss = s => UF.status === 'any' ? !(s.r && s.t && s.f) : !s[UF.status];
+  let total = 0, pool = 0, out = '';
+  exams.forEach(e => {
+    const base = e.items.filter(it => UF.subj === 'all' || SUBJ_KEY[it.subj] === UF.subj);
+    pool += base.length;
+    const rows = base.filter(it => miss(getS(it.id)));
+    total += rows.length;
+    if(!rows.length) return;
+    out += `<div class="group-title">${esc(e.title)} <small>${relText(e)}</small>${e.id===NEXT.id?'<span class="badge next">آزمون پیش رو</span>':''}</div>
+      <div class="list-card">${rows.map(it => itemHtml(e,it,{missing:true})).join('')}</div>`;
+  });
+  document.getElementById('ufSummary').innerHTML = pool ? `<b>${fa(total)}</b> مبحث از ${fa(pool)} مبحث باقی مانده است.` : 'مبحثی با این فیلتر وجود ندارد.';
+  document.getElementById('ufList').innerHTML = out || (pool ? '<div class="empty">آفرین! در این فیلتر چیزی باقی نمانده است. ✅</div>' : '');
+  growTextareas(document.getElementById('ufList'));
+}
+
+/* =====================================================================
+   تب ۴: دروس عمومی
+   ===================================================================== */
+function genProgress(g){
+  let d = 0; for(let i=0;i<g.n;i++){ const c = getG(g.key,i); d += (c.s?1:0)+(c.f?1:0); }
+  return Math.round(d*100/(g.n*2));
+}
+function renderGeneral(){
+  const cards = GENERAL.map(g => {
+    let rows = '';
+    for(let i=0;i<g.n;i++){
+      const c = getG(g.key,i);
+      rows += `<div class="chap"><b>فصل ${fa(i+1)}</b>
+        <label class="chip"><input type="checkbox" data-g="${g.key}" data-c="${i}" data-f="s" ${c.s?'checked':''}><span>مطالعه</span></label>
+        <label class="chip"><input type="checkbox" data-g="${g.key}" data-c="${i}" data-f="f" ${c.f?'checked':''}><span>سوال نهایی</span></label></div>`;
+    }
+    return `<section class="gen" data-gen="${g.key}">
+      <div class="gen-head"><h3>${g.name}</h3><span>${fa(g.n)} فصل · <b data-gen-pct="${g.key}">${fa(genProgress(g))}٪</b></span></div>
+      <div class="bar"><div data-gen-bar="${g.key}" style="width:${genProgress(g)}%"></div></div>${rows}</section>`;
+  }).join('');
+  return `<div class="page-head"><div><h2>دروس عمومی</h2><p>برای هر فصل، مطالعه و سوال نهایی را تیک بزنید.</p></div></div><div class="gen-grid">${cards}</div>`;
+}
+function refreshGeneral(key){
+  const g = GENERAL.find(x => x.key === key); if(!g) return;
+  const p = genProgress(g);
+  const t = document.querySelector(`[data-gen-pct="${key}"]`), b = document.querySelector(`[data-gen-bar="${key}"]`);
+  if(t) t.textContent = fa(p) + '٪'; if(b) b.style.width = p + '%';
+}
+
+/* =====================================================================
+   مسیریابی تب‌ها و رویدادها
+   ===================================================================== */
+const TABS = [['study','برنامه مطالعه',ICONS.study],['report','گزارش آزمون',ICONS.report],['unread','خوانده‌نشده‌ها',ICONS.unread],['general','دروس عمومی',ICONS.general]];
+let currentTab = 'study';
+function renderTabs(){
+  document.getElementById('tabs').innerHTML = TABS.map(([k,l,ic]) => `<button class="tab ${k===currentTab?'active':''}" data-tab="${k}">${ic}<span>${l}</span></button>`).join('');
+}
+function renderTab(){
+  const v = document.getElementById('view');
+  v.innerHTML = currentTab==='study' ? renderStudy() : currentTab==='report' ? renderReport() : currentTab==='unread' ? renderUnread() : renderGeneral();
+  renderTabs();
+  if(currentTab==='report') renderCharts();
+  if(currentTab==='unread') renderUnreadList();
+  growTextareas(v);
+}
+function scrollToNext(){
+  const el = document.querySelector(`.exam[data-exam="${NEXT.id}"]`);
+  if(el) setTimeout(() => el.scrollIntoView({block:'center', behavior:'smooth'}), 50);
+}
+
+document.addEventListener('click', e => {
+  const tab = e.target.closest('[data-tab]');
+  if(tab){ currentTab = tab.dataset.tab; renderTab(); window.scrollTo({top:0}); return; }
+  const head = e.target.closest('[data-toggle]');
+  if(head){
+    const card = head.closest('.exam'), set = openSets[card.dataset.set], id = Number(card.dataset.exam);
+    card.classList.toggle('open'); card.classList.contains('open') ? set.add(id) : set.delete(id);
+    if(card.classList.contains('open')) growTextareas(card);
+  }
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if(t.matches('input[type=checkbox][data-k]')){
+    setS(t.dataset.k, t.dataset.f, t.checked);
+    refreshProgress(String(t.dataset.k).split('-')[0]);
+    if(currentTab === 'unread'){ // ردیف انجام‌شده کم‌رنگ می‌شود (تا تغییر فیلتر باقی می‌ماند)
+      const row = t.closest('.item'); const s = getS(t.dataset.k);
+      const stillMissing = UF.status === 'any' ? !(s.r&&s.t&&s.f) : !s[UF.status];
+      row.classList.toggle('resolved', !stillMissing);
+      const mEl = row.querySelector('[data-missing]'); if(mEl) mEl.innerHTML = missingHtml(s);
+    }
+  } else if(t.matches('input[type=checkbox][data-g]')){
+    setG(t.dataset.g, Number(t.dataset.c), t.dataset.f, t.checked); refreshGeneral(t.dataset.g);
+  } else if(t.id === 'ufExam'){ UF.exam = t.value; renderUnreadList(); }
+  else if(t.id === 'ufSubj'){ UF.subj = t.value; renderUnreadList(); }
+  else if(t.id === 'ufStatus'){ UF.status = t.value; renderUnreadList(); }
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if(t.matches('textarea.note')){
+    setS(t.dataset.k, 'note', t.value); t.style.height='auto'; t.style.height = Math.max(40,t.scrollHeight)+'px';
+  } else if(t.matches('input[data-rx]')){
+    const clean = normNum(t.value); if(clean !== t.value) t.value = clean;
+    setR(t.dataset.rx, t.dataset.rf, clean);
+    const s = document.querySelector(`[data-rsum="${t.dataset.rx}"]`);
+    const ex = EXAMS.find(x => String(x.id) === t.dataset.rx); if(s && ex) s.textContent = reportSummary(ex);
+    renderCharts();
+  }
+});
+
+/* ---------- جمله انگیزشی، دیالوگ داده‌ها، پیام کوتاه ---------- */
+let lastQuote = -1;
+function showQuote(){
+  let i; do { i = Math.floor(Math.random()*QUOTES.length); } while(i === lastQuote && QUOTES.length > 1);
+  lastQuote = i; document.getElementById('quoteText').textContent = QUOTES[i];
+}
+let toastTimer;
+function toast(msg){ const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 3200); }
+
+/* ---------- شروع برنامه ---------- */
+(function init(){
+  document.getElementById('btnData').innerHTML = ICONS.data;
+  document.getElementById('btnQuote').innerHTML = ICONS.refresh;
+  document.getElementById('btnExport').innerHTML = ICONS.down + ' دریافت فایل پشتیبان (JSON)';
+  document.getElementById('btnImport').innerHTML = ICONS.up + ' بارگذاری فایل پشتیبان';
+  applyTheme(state.theme || preferredTheme());
+  const [ty,tm,td] = (()=>{ const d=new Date(); return gregorianToJalali(d.getFullYear(),d.getMonth()+1,d.getDate()); })();
+  document.getElementById('todayLine').textContent = `امروز ${fa(td)} ${MONTHS[tm]} ${fa(ty)} · آزمون بعدی: ${NEXT.title} (${relText(NEXT)})`;
+  showQuote();
+  document.getElementById('btnQuote').onclick = showQuote;
+  document.getElementById('btnTheme').onclick = () => {
+    const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    state.theme = t; applyTheme(t); save(); if(currentTab==='report') renderCharts();
+  };
+  const dlg = document.getElementById('dlgData');
+  document.getElementById('btnData').onclick = () => { updateStatus(); dlg.showModal(); };
+  document.getElementById('btnClose').onclick = () => dlg.close();
+  document.getElementById('btnExport').onclick = exportBackup;
+  document.getElementById('btnImport').onclick = () => document.getElementById('fileImport').click();
+  document.getElementById('fileImport').onchange = ev => { const f = ev.target.files[0]; if(f) importBackup(f); ev.target.value = ''; dlg.close(); };
+  document.getElementById('btnLinkNew').onclick = linkNewFile;
+  document.getElementById('btnLinkOpen').onclick = linkOpenFile;
+  if(!window.showSaveFilePicker){ document.getElementById('btnLinkNew').classList.add('hidden'); document.getElementById('btnLinkOpen').classList.add('hidden'); }
+  renderTab(); scrollToNext();
+})();
+
+/* ثبت Service Worker برای نصب و کار آفلاین (فقط روی http/https) */
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+</script>
+</body>
+</html>
