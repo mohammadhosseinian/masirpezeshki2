@@ -1,8 +1,8 @@
 /* Service Worker برنامه «در مسیر پزشکی»
    هر زمان index.html را تغییر دادید، شماره‌ی VERSION را یکی بالا ببرید تا گوشی نسخه‌ی جدید را بگیرد. */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = 'dar-masir-pezeshki-' + VERSION;
-const SHELL = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png'];
+const SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
